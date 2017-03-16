@@ -33,10 +33,33 @@ public class MapTest {
         administrator.getConfiguration().addEventType("Person",person);
         EPStatement st = administrator.createEPL(epl+"'xdl'");
         st.addListener(new MapPersonListener());
-        EventType eventType = administrator.getConfiguration().getEventType("Address");
+        EventType eventType = administrator.getConfiguration().getEventType("Person");
         log.info("props:{}", Arrays.asList(eventType.getPropertyNames()));
+
         getDatas().forEach(p->{
             //发送map事件
+            provider.getEPRuntime().sendEvent(p,"Person");
+        });
+        //新增属性
+        person.put("class",String.class);
+        administrator.getConfiguration().updateMapEventType("Person",person);
+        log.info("props:{}", Arrays.asList(eventType.getPropertyNames()));
+        //新增属性后的操作
+        epl = "select children as ch,phones('home') as phone,address,class from Person where name=";
+        st = administrator.createEPL(epl+"'xdl'");
+        st.addListener((newEvents, oldEvents) -> {
+            try{
+                String cls = (String) newEvents[0].get("class");
+                if (cls!=null){
+                    log.info("class={}",cls);
+                }
+            }catch (Exception ex){
+                log.error(ex.getMessage());
+            }
+        });
+        getDatas().forEach(p->{
+            //发送map事件
+            p.put("class","三年一班");
             provider.getEPRuntime().sendEvent(p,"Person");
         });
     }
