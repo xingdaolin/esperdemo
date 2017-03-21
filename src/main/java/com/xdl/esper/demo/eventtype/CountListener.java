@@ -4,6 +4,8 @@ import com.espertech.esper.client.EventBean;
 import com.espertech.esper.client.UpdateListener;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.stream.Stream;
+
 /**
  * 分组统计监听
  *
@@ -15,8 +17,9 @@ public class CountListener implements UpdateListener {
     @Override
     public void update(EventBean[] newEvents, EventBean[] oldEvents) {
         if(newEvents!=null){
-            EventBean eb = newEvents[0];
-            log.info("total:{}",eb.get("total"));
+            Stream.of(newEvents).forEach(eb->{
+                log.info("total:{},name:{}",eb.get("total"),eb.get("name"));
+            });
         }
     }
 }
