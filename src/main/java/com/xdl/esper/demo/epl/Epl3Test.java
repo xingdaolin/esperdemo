@@ -15,29 +15,33 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class Epl3Test {
     @Data
-    private static class Student{
+    private static class Student {
         String name;
         int id;
     }
+
     @Data
-    private static class Teacher{
+    private static class Teacher {
         String name;
         int id;
     }
-    private static class Epl3Listener implements UpdateListener{
+
+    private static class Epl3Listener implements UpdateListener {
 
         @Override
         public void update(EventBean[] newEvents, EventBean[] oldEvents) {
-            if (newEvents!=null){
+            if (newEvents != null) {
                 log.info(newEvents[0].getUnderlying().toString());
+
             }
         }
     }
+
     public static void main(String[] args) {
         EPServiceProvider provider = EPServiceProviderManager.getDefaultProvider();
         EPAdministrator administrator = provider.getEPAdministrator();
-        administrator.getConfiguration().addEventType("Student",Student.class);
-        administrator.getConfiguration().addEventType("Teacher",Teacher.class);
+        administrator.getConfiguration().addEventType("Student", Student.class);
+        administrator.getConfiguration().addEventType("Teacher", Teacher.class);
         String epl = "select s.name as sname,t.name as tname from Student.win:time(10 sec) as s,Teacher.win:time(10 sec) as t where s.id=t.id";
         EPStatement statement = administrator.createEPL(epl);
         statement.addListenerWithReplay(new Epl3Listener());
