@@ -17,14 +17,18 @@ public class Test {
     public static void main(String[] args) {
         String epl = "select children[1] as ch,phones('home') as phone,address from Person where name=";
         String update = "update Person set phones('home')=123456 where name='xdl'";
-        EPServiceProvider serviceProvider = EPServiceProviderManager.getDefaultProvider();
-        EPAdministrator administrator = serviceProvider.getEPAdministrator();
+        Configuration cnf = new Configuration();
+        cnf.getEngineDefaults().getThreading().setThreadPoolInbound(true);
+        cnf.getEngineDefaults().getThreading().setThreadPoolOutbound(true);
+        cnf.getEngineDefaults().getThreading().setListenerDispatchPreserveOrder(false);
+        EPServiceProvider provider = EPServiceProviderManager.getDefaultProvider(cnf);
+        EPAdministrator administrator = provider.getEPAdministrator();
         administrator.getConfiguration().addEventType("Person",Person.class);
         EPStatement statement = administrator.createEPL(epl+"'xiaoxiong'");
         EPStatement statement1 = administrator.createEPL(epl+"'xdl'");
         statement.addListener(new PersonListener());
         statement1.addListener(new PersonListener());
-        EPRuntime runtime = serviceProvider.getEPRuntime();
+        EPRuntime runtime = provider.getEPRuntime();
 //        runtime.executeQuery(update);
         getDatas().stream().forEach(p->{
             //发送pojo事件
@@ -75,6 +79,11 @@ public class Test {
         p1.setName("xiaoxiong");
         List<Person> ps = new ArrayList<>();
         ps.add(p);ps.add(p1);
+        for (int i=0;i<10000;i++){
+            Person pp = new Person();
+            pp.setName("xdl"+i);
+            ps.add(pp);
+        }
         return ps;
     }
 }
