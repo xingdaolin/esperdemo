@@ -45,7 +45,7 @@ public class Epl_output {
         EPAdministrator administrator = provider.getEPAdministrator();
         administrator.getConfiguration().addEventType("OrderEvent", OrderEvent.class);
         //统计1分钟内,每进入一个orderEvent,统计一次sum(price) ,并且每个10s输出一次结果,
-        //all:输出所有,first:输出第一个,last输出最后一个,snapshot:shuhc
+        //all:输出所有,first:输出第一个,last输出最后一个,snapshot:输出快照,会复制一份出来,
         String epl = "select price from OrderEvent.win:time(30 sec) output   snapshot every 10 seconds ";
         EPStatement statement = administrator.createEPL(epl);
         statement.addListener(new EplOutputListener());
