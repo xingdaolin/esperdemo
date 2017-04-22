@@ -19,7 +19,7 @@ public class DisruptorStart {
         LongEventFactory factory = new LongEventFactory();
         int ringBufferSize = 1024*1024;//ringBuffer大小,必须是2的幂
         //单生产者模式
-        Disruptor<LongEvent> disruptor = new Disruptor<LongEvent>(factory,ringBufferSize, Executors.defaultThreadFactory(), ProducerType.SINGLE,
+        Disruptor<LongEvent> disruptor = new Disruptor<LongEvent>(factory,ringBufferSize, Executors.newFixedThreadPool(1), ProducerType.MULTI,
                 new SleepingWaitStrategy());
         EventHandler<LongEvent> eventEventHandler = new LongEventHandler();
         disruptor.handleEventsWith(eventEventHandler);
@@ -29,7 +29,8 @@ public class DisruptorStart {
         ByteBuffer bb = ByteBuffer.allocate(8);
         for (long l=0l;l<1000000;l++){
             bb.putLong(0,l);
-            ringBuffer.publishEvent(((event, sequence,buffer) ->event.setValue(bb.getLong(0))));
+            final long li=l;
+            ringBuffer.publishEvent(((event, sequence,buffer) ->{event.setValue(bb.getLong(0));event.setName(li+"");}));
         }
         disruptor.shutdown();
     }

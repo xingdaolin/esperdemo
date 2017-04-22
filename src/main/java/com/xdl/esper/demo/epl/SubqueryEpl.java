@@ -61,7 +61,6 @@ public class SubqueryEpl {
         statement.addListener(new SubqueryListener());
         EPStatement statement1 = administrator.createEPL(epl1);
         statement1.addListener(new SubqueryListener1());
-
         getData().forEach(e->{
             provider.getEPRuntime().sendEvent(e);
         });

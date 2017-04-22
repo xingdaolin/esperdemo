@@ -98,11 +98,14 @@ public class EplJdbc {
         StringBuilder epl = new StringBuilder("@Hook(type=HookType.SQLROW");
         epl.append(",hook='").append(MysqlOutputRowConvert.class.getName()).append("')");
         epl.append("select * from sql:mydb['select id,name from user as u where u.id=${var}']");
-        EPStatement statement = administrator.createEPL(epl.toString());
+        EPStatement statement = administrator.createEPL(epl.toString(),"epl2");
        Iterator<EventBean> it = statement.iterator();
         it.forEachRemaining(x->{
             log.info(x.getUnderlying().toString());
         });
+        System.out.println(administrator.getStatement("epl2").toString());
+        statement.destroy();
+        System.out.println(administrator.getStatement("epl2").toString());
     }
     private static List<User> getData(){
         List<User> list = new ArrayList<>();

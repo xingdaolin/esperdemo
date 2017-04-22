@@ -13,6 +13,6 @@ public class LongEventHandler implements EventHandler<LongEvent> {
 
     @Override
     public void onEvent(LongEvent longEvent, long l, boolean b) throws Exception {
-        log.info("Event:{}",longEvent.getValue());
+        log.info("Event:{},name:{}",longEvent.getValue(),longEvent.getName());
     }
 }

@@ -14,7 +14,8 @@ import java.util.concurrent.TimeUnit;
  * @date 2017-03-22 下午8:19
  */
 @Slf4j
-public class Epl6Test {
+public class
+Epl6Test {
     @Data
     private static class Apple{
         int price;

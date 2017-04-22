@@ -11,4 +11,5 @@ import lombok.Setter;
 @Data
 public class LongEvent {
     private long value;
+    private String name;
 }

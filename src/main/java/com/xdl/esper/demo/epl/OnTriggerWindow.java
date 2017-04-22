@@ -1,6 +1,9 @@
 package com.xdl.esper.demo.epl;
 
 import com.espertech.esper.client.*;
+import com.espertech.esper.client.dataflow.EPDataFlowInstance;
+import com.espertech.esper.core.service.EPAdministratorHelper;
+import com.espertech.esper.dataflow.core.EPDataFlowInstanceImpl;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
@@ -91,6 +94,7 @@ public class OnTriggerWindow {
         admin.createEPL(epl5);
         EPStatement statement = admin.createEPL(epl2);
         statement.addListener(new OnTriggerListener());
+
         DataEvent d1 = new DataEvent();
         d1.setName("d1");
         d1.setSize(1);

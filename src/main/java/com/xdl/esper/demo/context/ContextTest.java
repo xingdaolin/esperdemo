@@ -55,6 +55,8 @@ public class ContextTest {
         administrator.createEPL(epl);
         String epl1 = "context Segment select * from pattern[every a=Bank(amount>400)->b=Bank(amount>400) where timer:within(10 sec)]";
         EPStatement statement = administrator.createEPL(epl1);
+        statement.destroy();
+        statement.stop();
         statement.addListener(new ContextListener());
         EPRuntime runtime = provider.getEPRuntime();
         List<Bank> list = getData();

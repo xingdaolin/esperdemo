@@ -35,7 +35,7 @@ public class Epl5Test {
         EPServiceProvider provider = EPServiceProviderManager.getDefaultProvider();
         EPAdministrator administrator = provider.getEPAdministrator();
         administrator.getConfiguration().addEventType("Apple",Apple.class);
-        String epl = "select avg(price) as price,color,size from Apple.win:length_batch(2) group by color,size";
+        String epl = "select avg(price) as price,color,size from Apple(color='red').win:length_batch(2) group by color,size";
         EPStatement statement = administrator.createEPL(epl);
         statement.addListener(new Epl5Listener());
         Apple ap = new Apple();

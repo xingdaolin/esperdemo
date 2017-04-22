@@ -23,7 +23,7 @@ public class MainTest {
         rm.execute(mb);
     }
     @Data
-    private static class MyBean{
+    private static class MyBean extends Object{
         int id;
     }
 }

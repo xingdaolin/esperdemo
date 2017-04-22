@@ -40,6 +40,7 @@ public class Epl4 {
         String epl = "select * from Student(IsZero.isZero(age))";
         administrator.getConfiguration().addImport(IsZero.class);
         EPStatement statement = administrator.createEPL(epl);
+        statement.stop();
         statement.addListener(new Epl4Listener());
         Student st = new Student();
         st.setAge(3);

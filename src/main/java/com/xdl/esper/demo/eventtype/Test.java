@@ -20,7 +20,9 @@ public class Test {
         Configuration cnf = new Configuration();
         cnf.getEngineDefaults().getThreading().setThreadPoolInbound(true);
         cnf.getEngineDefaults().getThreading().setThreadPoolOutbound(true);
+        cnf.getEngineDefaults().getThreading().setThreadPoolOutboundNumThreads(2);
         cnf.getEngineDefaults().getThreading().setListenerDispatchPreserveOrder(false);
+//        cnf.getEngineDefaults().getThreading().
         EPServiceProvider provider = EPServiceProviderManager.getDefaultProvider(cnf);
         EPAdministrator administrator = provider.getEPAdministrator();
         administrator.getConfiguration().addEventType("Person",Person.class);
